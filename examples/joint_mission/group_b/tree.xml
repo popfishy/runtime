@@ -1,0 +1,12 @@
+<root main_tree_to_execute="GroupBTree">
+  <BehaviorTree ID="GroupBTree">
+    <Sequence>
+      <Action ID="PublishGroupReady"/>
+      <Action ID="WaitGroupAReady" timeout_s="120"/>
+      <Action ID="WaitReconComplete" timeout_s="600"/>
+      <Action ID="StrikeTargets" plan_id="strike-targets" timeout_s="300"/>
+      <Action ID="ReturnStrikeUavs" plan_id="return-strike-uavs" timeout_s="300"/>
+      <Action ID="PublishStrikeComplete"/>
+    </Sequence>
+  </BehaviorTree>
+</root>

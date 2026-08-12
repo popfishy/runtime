@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "uav-bt-runtime"
+version = "0.1.0"
+description = "High-level UAV behavior-tree mission runtime"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "pydantic>=2.0,<=2.10.6",
+    "typing-extensions>=4.12.2; python_version < '3.9'",
+]
+
+[project.scripts]
+uav-bt-runtime = "uav_bt_runtime.cli:main"
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

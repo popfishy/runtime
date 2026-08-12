@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "package_version": "3.0-a",
+  "peer_package_version": "3.0-b",
+  "mission_id": "joint-mission-002",
+  "group_id": "GroupA",
+  "reviewed": false,
+  "tree_file": "tree.xml",
+  "robots_file": "robots.json",
+  "world_file": "world.json",
+  "bootstrap_file": "bootstrap.json",
+  "plan_files": [
+    "plans/plans.json"
+  ],
+  "target_config_version": "target-v3",
+  "file_hashes": {
+    "tree.xml": "cd490ef375f2662c253dd3cd58854a95b0ff9b9ba5a9324f5a48daafbb4cb46a",
+    "robots.json": "25073f780b097119890eb608281f8751a41fc773f059ce16d76a70b9016383e4",
+    "world.json": "485a8b8ec30747e69fc557c65deac826200ee88a48f0f7939699d7ef833f40b5",
+    "bootstrap.json": "e7d0894e66577f88c32e651ade867e2dc4669d834d2fa41345e242c715b13ab1",
+    "plans/plans.json": "3a5810989dd47942c8d8a47c855776fbd5d34958da0b377ef8b121366aada8a9"
+  }
+}

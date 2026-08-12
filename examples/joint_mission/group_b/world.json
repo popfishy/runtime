@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "coordinate_frame": "mission_enu",
+  "target_config_version": "target-v3",
+  "flight_area": {
+    "min_x": 0.0,
+    "max_x": 100.0,
+    "min_y": 0.0,
+    "max_y": 150.0,
+    "safety_margin_m": 5.0
+  },
+  "targets": {
+    "target-1": {
+      "x": 5.0,
+      "y": 5.0,
+      "z": 3.0,
+      "yaw": 0.0
+    },
+    "target-2": {
+      "x": 2.0,
+      "y": 2.0,
+      "z": 3.0,
+      "yaw": 0.0
+    }
+  }
+}

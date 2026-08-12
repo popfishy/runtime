@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ros_python/
+build/
+dist/
+*.egg-info/
+*.jsonl

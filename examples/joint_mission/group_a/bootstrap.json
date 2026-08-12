@@ -1,0 +1,111 @@
+{
+  "schema_version": "1.0",
+  "mission_id": "joint-mission-002",
+  "group_id": "GroupA",
+  "roster": {
+    "group_id": "GroupA",
+    "active_ids": [
+      "A01",
+      "A02",
+      "A03",
+      "A04",
+      "A05",
+      "A06",
+      "A07",
+      "A08",
+      "A09",
+      "A10",
+      "A11",
+      "A12"
+    ],
+    "reserve_ids": [
+      "A13",
+      "A14",
+      "A15"
+    ],
+    "failed_ids": [],
+    "inactive_ids": []
+  },
+  "initial_states": [
+    {
+      "uav_id": "A01",
+      "online": true,
+      "available": true
+    },
+    {
+      "uav_id": "A02",
+      "online": true,
+      "available": true
+    },
+    {
+      "uav_id": "A03",
+      "online": true,
+      "available": true
+    },
+    {
+      "uav_id": "A04",
+      "online": true,
+      "available": true
+    },
+    {
+      "uav_id": "A05",
+      "online": true,
+      "available": true
+    },
+    {
+      "uav_id": "A06",
+      "online": true,
+      "available": true
+    },
+    {
+      "uav_id": "A07",
+      "online": true,
+      "available": true
+    },
+    {
+      "uav_id": "A08",
+      "online": true,
+      "available": true
+    },
+    {
+      "uav_id": "A09",
+      "online": true,
+      "available": true
+    },
+    {
+      "uav_id": "A10",
+      "online": true,
+      "available": true
+    },
+    {
+      "uav_id": "A11",
+      "online": true,
+      "available": true
+    },
+    {
+      "uav_id": "A12",
+      "online": true,
+      "available": true
+    },
+    {
+      "uav_id": "A13",
+      "online": true,
+      "available": true
+    },
+    {
+      "uav_id": "A14",
+      "online": true,
+      "available": true
+    },
+    {
+      "uav_id": "A15",
+      "online": true,
+      "available": true
+    }
+  ],
+  "blackboard": {
+    "mission_armed": true
+  },
+  "planned_fault_count": 6,
+  "planned_recovery_count": 3
+}

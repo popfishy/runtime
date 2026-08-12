@@ -1,0 +1,363 @@
+{
+  "schema_version": "1.0",
+  "uavs": [
+    {
+      "uav_id": "A01",
+      "group_id": "GroupA",
+      "role": "Recon",
+      "is_leader": true,
+      "is_reserve": false,
+      "capabilities": [
+        "FOLLOW_ROUTE",
+        "HOVER",
+        "MOVE_TO"
+      ]
+    },
+    {
+      "uav_id": "A02",
+      "group_id": "GroupA",
+      "role": "Recon",
+      "is_leader": false,
+      "is_reserve": false,
+      "capabilities": [
+        "FOLLOW_ROUTE",
+        "HOVER",
+        "MOVE_TO"
+      ]
+    },
+    {
+      "uav_id": "A03",
+      "group_id": "GroupA",
+      "role": "Recon",
+      "is_leader": false,
+      "is_reserve": false,
+      "capabilities": [
+        "FOLLOW_ROUTE",
+        "HOVER",
+        "MOVE_TO"
+      ]
+    },
+    {
+      "uav_id": "A04",
+      "group_id": "GroupA",
+      "role": "Recon",
+      "is_leader": false,
+      "is_reserve": false,
+      "capabilities": [
+        "FOLLOW_ROUTE",
+        "HOVER",
+        "MOVE_TO"
+      ]
+    },
+    {
+      "uav_id": "A05",
+      "group_id": "GroupA",
+      "role": "Recon",
+      "is_leader": false,
+      "is_reserve": false,
+      "capabilities": [
+        "FOLLOW_ROUTE",
+        "HOVER",
+        "MOVE_TO"
+      ]
+    },
+    {
+      "uav_id": "A06",
+      "group_id": "GroupA",
+      "role": "Recon",
+      "is_leader": false,
+      "is_reserve": false,
+      "capabilities": [
+        "FOLLOW_ROUTE",
+        "HOVER",
+        "MOVE_TO"
+      ]
+    },
+    {
+      "uav_id": "A07",
+      "group_id": "GroupA",
+      "role": "Recon",
+      "is_leader": false,
+      "is_reserve": false,
+      "capabilities": [
+        "FAULT_EXIT",
+        "FOLLOW_ROUTE",
+        "HOVER",
+        "MOVE_TO"
+      ]
+    },
+    {
+      "uav_id": "A08",
+      "group_id": "GroupA",
+      "role": "Recon",
+      "is_leader": false,
+      "is_reserve": false,
+      "capabilities": [
+        "FAULT_EXIT",
+        "FOLLOW_ROUTE",
+        "HOVER",
+        "MOVE_TO"
+      ]
+    },
+    {
+      "uav_id": "A09",
+      "group_id": "GroupA",
+      "role": "Recon",
+      "is_leader": false,
+      "is_reserve": false,
+      "capabilities": [
+        "FAULT_EXIT",
+        "FOLLOW_ROUTE",
+        "HOVER",
+        "MOVE_TO"
+      ]
+    },
+    {
+      "uav_id": "A10",
+      "group_id": "GroupA",
+      "role": "Recon",
+      "is_leader": false,
+      "is_reserve": false,
+      "capabilities": [
+        "FAULT_EXIT",
+        "FOLLOW_ROUTE",
+        "HOVER",
+        "MOVE_TO"
+      ]
+    },
+    {
+      "uav_id": "A11",
+      "group_id": "GroupA",
+      "role": "Recon",
+      "is_leader": false,
+      "is_reserve": false,
+      "capabilities": [
+        "FAULT_EXIT",
+        "FOLLOW_ROUTE",
+        "HOVER",
+        "MOVE_TO"
+      ]
+    },
+    {
+      "uav_id": "A12",
+      "group_id": "GroupA",
+      "role": "Recon",
+      "is_leader": false,
+      "is_reserve": false,
+      "capabilities": [
+        "FAULT_EXIT",
+        "FOLLOW_ROUTE",
+        "HOVER",
+        "MOVE_TO"
+      ]
+    },
+    {
+      "uav_id": "A13",
+      "group_id": "GroupA",
+      "role": "ReconReserve",
+      "is_leader": false,
+      "is_reserve": true,
+      "capabilities": [
+        "FOLLOW_ROUTE",
+        "HOVER",
+        "MOVE_TO"
+      ]
+    },
+    {
+      "uav_id": "A14",
+      "group_id": "GroupA",
+      "role": "ReconReserve",
+      "is_leader": false,
+      "is_reserve": true,
+      "capabilities": [
+        "FOLLOW_ROUTE",
+        "HOVER",
+        "MOVE_TO"
+      ]
+    },
+    {
+      "uav_id": "A15",
+      "group_id": "GroupA",
+      "role": "ReconReserve",
+      "is_leader": false,
+      "is_reserve": true,
+      "capabilities": [
+        "FOLLOW_ROUTE",
+        "HOVER",
+        "MOVE_TO"
+      ]
+    },
+    {
+      "uav_id": "B01",
+      "group_id": "GroupB",
+      "role": "Strike",
+      "is_leader": true,
+      "is_reserve": false,
+      "capabilities": [
+        "ATTACK",
+        "HOVER",
+        "RETURN"
+      ]
+    },
+    {
+      "uav_id": "B02",
+      "group_id": "GroupB",
+      "role": "Strike",
+      "is_leader": false,
+      "is_reserve": false,
+      "capabilities": [
+        "ATTACK",
+        "HOVER",
+        "RETURN"
+      ]
+    },
+    {
+      "uav_id": "B03",
+      "group_id": "GroupB",
+      "role": "Strike",
+      "is_leader": false,
+      "is_reserve": false,
+      "capabilities": [
+        "ATTACK",
+        "HOVER",
+        "RETURN"
+      ]
+    },
+    {
+      "uav_id": "B04",
+      "group_id": "GroupB",
+      "role": "Strike",
+      "is_leader": false,
+      "is_reserve": false,
+      "capabilities": [
+        "ATTACK",
+        "HOVER",
+        "RETURN"
+      ]
+    },
+    {
+      "uav_id": "B05",
+      "group_id": "GroupB",
+      "role": "Strike",
+      "is_leader": false,
+      "is_reserve": false,
+      "capabilities": [
+        "ATTACK",
+        "HOVER",
+        "RETURN"
+      ]
+    },
+    {
+      "uav_id": "B06",
+      "group_id": "GroupB",
+      "role": "Strike",
+      "is_leader": false,
+      "is_reserve": false,
+      "capabilities": [
+        "ATTACK",
+        "HOVER",
+        "RETURN"
+      ]
+    },
+    {
+      "uav_id": "B07",
+      "group_id": "GroupB",
+      "role": "GroundNode",
+      "is_leader": false,
+      "is_reserve": false,
+      "capabilities": [
+        "HOVER"
+      ]
+    },
+    {
+      "uav_id": "B08",
+      "group_id": "GroupB",
+      "role": "GroundNode",
+      "is_leader": false,
+      "is_reserve": false,
+      "capabilities": [
+        "HOVER"
+      ]
+    },
+    {
+      "uav_id": "B09",
+      "group_id": "GroupB",
+      "role": "GroundNode",
+      "is_leader": false,
+      "is_reserve": false,
+      "capabilities": [
+        "HOVER"
+      ]
+    },
+    {
+      "uav_id": "B10",
+      "group_id": "GroupB",
+      "role": "GroundNode",
+      "is_leader": false,
+      "is_reserve": false,
+      "capabilities": [
+        "HOVER"
+      ]
+    },
+    {
+      "uav_id": "B11",
+      "group_id": "GroupB",
+      "role": "GroundNode",
+      "is_leader": false,
+      "is_reserve": false,
+      "capabilities": [
+        "HOVER"
+      ]
+    },
+    {
+      "uav_id": "B12",
+      "group_id": "GroupB",
+      "role": "GroundNode",
+      "is_leader": false,
+      "is_reserve": false,
+      "capabilities": [
+        "HOVER"
+      ]
+    },
+    {
+      "uav_id": "B13",
+      "group_id": "GroupB",
+      "role": "GroundNode",
+      "is_leader": false,
+      "is_reserve": false,
+      "capabilities": [
+        "HOVER"
+      ]
+    },
+    {
+      "uav_id": "B14",
+      "group_id": "GroupB",
+      "role": "GroundNode",
+      "is_leader": false,
+      "is_reserve": false,
+      "capabilities": [
+        "HOVER"
+      ]
+    },
+    {
+      "uav_id": "B15",
+      "group_id": "GroupB",
+      "role": "GroundNode",
+      "is_leader": false,
+      "is_reserve": false,
+      "capabilities": [
+        "HOVER"
+      ]
+    },
+    {
+      "uav_id": "B16",
+      "group_id": "GroupB",
+      "role": "GroundNode",
+      "is_leader": false,
+      "is_reserve": false,
+      "capabilities": [
+        "HOVER"
+      ]
+    }
+  ]
+}

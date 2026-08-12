@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.0",
+  "plans": [
+    {
+      "plan_id": "strike-targets",
+      "group_id": "GroupB",
+      "robot_assignments": {
+        "B01": {
+          "robot_id": "B01",
+          "command_type": "ATTACK",
+          "payload": {
+            "target_id": "target-1",
+            "manual_takeoff_required": true
+          }
+        },
+        "B02": {
+          "robot_id": "B02",
+          "command_type": "ATTACK",
+          "payload": {
+            "target_id": "target-2",
+            "manual_takeoff_required": true
+          }
+        }
+      },
+      "completion_policy": "ALL"
+    },
+    {
+      "plan_id": "strike-target-b01-test",
+      "group_id": "GroupB",
+      "robot_assignments": {
+        "B01": {
+          "robot_id": "B01",
+          "command_type": "ATTACK",
+          "payload": {
+            "target_id": "target-1",
+            "manual_takeoff_required": true
+          }
+        }
+      },
+      "completion_policy": "ALL"
+    },
+    {
+      "plan_id": "return-strike-uavs",
+      "group_id": "GroupB",
+      "robot_assignments": {
+        "B01": {
+          "robot_id": "B01",
+          "command_type": "RETURN",
+          "payload": {
+            "waypoints": [
+              {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 1.0,
+                "yaw": 0.0
+              }
+            ]
+          }
+        },
+        "B02": {
+          "robot_id": "B02",
+          "command_type": "RETURN",
+          "payload": {
+            "waypoints": [
+              {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0,
+                "yaw": 0.0
+              }
+            ]
+          }
+        }
+      },
+      "completion_policy": "ALL"
+    }
+  ]
+}

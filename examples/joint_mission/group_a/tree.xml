@@ -1,0 +1,16 @@
+<root main_tree_to_execute="GroupATree">
+  <BehaviorTree ID="GroupATree">
+    <Sequence>
+      <Action ID="PrepareGroupA" plan_id="prepare-a" timeout_s="90"/>
+      <Action ID="PublishGroupReady"/>
+      <Action ID="WaitGroupBReady" timeout_s="120"/>
+      <Action ID="CoverageSegment1" plan_id="coverage-segment-1" timeout_s="300"/>
+      <Action ID="SimulateDamage" plan_id="fault-exit" timeout_s="180"/>
+      <Action ID="RecoverReconGroup" plan_id="recovery-a" timeout_s="240"/>
+      <Action ID="CoverageSegment2" plan_id="coverage-segment-2" timeout_s="300"/>
+      <Action ID="PublishReconComplete"/>
+      <Action ID="WaitStrikeComplete" timeout_s="300"/>
+      <Action ID="HoldCoverageEnd" plan_id="hold-a-end" timeout_s="60"/>
+    </Sequence>
+  </BehaviorTree>
+</root>

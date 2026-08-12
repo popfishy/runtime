@@ -1,0 +1,823 @@
+{
+  "schema_version": "1.0",
+  "plans": [
+    {
+      "plan_id": "prepare-a",
+      "group_id": "GroupA",
+      "robot_assignments": {
+        "A01": {
+          "robot_id": "A01",
+          "command_type": "MOVE_TO",
+          "payload": {
+            "target_pose": {
+              "x": 17.5,
+              "y": 50.0,
+              "z": 12.0,
+              "yaw": 0.0
+            }
+          }
+        },
+        "A02": {
+          "robot_id": "A02",
+          "command_type": "MOVE_TO",
+          "payload": {
+            "target_pose": {
+              "x": 12.5,
+              "y": 45.0,
+              "z": 12.0,
+              "yaw": 0.0
+            }
+          }
+        },
+        "A03": {
+          "robot_id": "A03",
+          "command_type": "MOVE_TO",
+          "payload": {
+            "target_pose": {
+              "x": 17.5,
+              "y": 45.0,
+              "z": 12.0,
+              "yaw": 0.0
+            }
+          }
+        },
+        "A04": {
+          "robot_id": "A04",
+          "command_type": "MOVE_TO",
+          "payload": {
+            "target_pose": {
+              "x": 22.5,
+              "y": 45.0,
+              "z": 12.0,
+              "yaw": 0.0
+            }
+          }
+        },
+        "A05": {
+          "robot_id": "A05",
+          "command_type": "MOVE_TO",
+          "payload": {
+            "target_pose": {
+              "x": 27.5,
+              "y": 45.0,
+              "z": 12.0,
+              "yaw": 0.0
+            }
+          }
+        },
+        "A06": {
+          "robot_id": "A06",
+          "command_type": "MOVE_TO",
+          "payload": {
+            "target_pose": {
+              "x": 12.5,
+              "y": 50.0,
+              "z": 12.0,
+              "yaw": 0.0
+            }
+          }
+        },
+        "A07": {
+          "robot_id": "A07",
+          "command_type": "MOVE_TO",
+          "payload": {
+            "target_pose": {
+              "x": 22.5,
+              "y": 50.0,
+              "z": 12.0,
+              "yaw": 0.0
+            }
+          }
+        },
+        "A08": {
+          "robot_id": "A08",
+          "command_type": "MOVE_TO",
+          "payload": {
+            "target_pose": {
+              "x": 27.5,
+              "y": 50.0,
+              "z": 12.0,
+              "yaw": 0.0
+            }
+          }
+        },
+        "A09": {
+          "robot_id": "A09",
+          "command_type": "MOVE_TO",
+          "payload": {
+            "target_pose": {
+              "x": 12.5,
+              "y": 55.0,
+              "z": 12.0,
+              "yaw": 0.0
+            }
+          }
+        },
+        "A10": {
+          "robot_id": "A10",
+          "command_type": "MOVE_TO",
+          "payload": {
+            "target_pose": {
+              "x": 17.5,
+              "y": 55.0,
+              "z": 12.0,
+              "yaw": 0.0
+            }
+          }
+        },
+        "A11": {
+          "robot_id": "A11",
+          "command_type": "MOVE_TO",
+          "payload": {
+            "target_pose": {
+              "x": 22.5,
+              "y": 55.0,
+              "z": 12.0,
+              "yaw": 0.0
+            }
+          }
+        },
+        "A12": {
+          "robot_id": "A12",
+          "command_type": "MOVE_TO",
+          "payload": {
+            "target_pose": {
+              "x": 27.5,
+              "y": 55.0,
+              "z": 12.0,
+              "yaw": 0.0
+            }
+          }
+        }
+      },
+      "completion_policy": "ALL"
+    },
+    {
+      "plan_id": "coverage-segment-1",
+      "group_id": "GroupA",
+      "robot_assignments": {
+        "A01": {
+          "robot_id": "A01",
+          "command_type": "FOLLOW_ROUTE",
+          "payload": {
+            "waypoints": [
+              {
+                "x": 15.0,
+                "y": 12.0,
+                "z": 12.0,
+                "yaw": 0.0
+              },
+              {
+                "x": 80.0,
+                "y": 12.0,
+                "z": 12.0,
+                "yaw": 0.0
+              },
+              {
+                "x": 80.0,
+                "y": 26.0,
+                "z": 12.0,
+                "yaw": 3.141593
+              },
+              {
+                "x": 15.0,
+                "y": 26.0,
+                "z": 12.0,
+                "yaw": 3.141593
+              },
+              {
+                "x": 15.0,
+                "y": 40.0,
+                "z": 12.0,
+                "yaw": 0.0
+              },
+              {
+                "x": 80.0,
+                "y": 40.0,
+                "z": 12.0,
+                "yaw": 0.0
+              },
+              {
+                "x": 80.0,
+                "y": 54.0,
+                "z": 12.0,
+                "yaw": 3.141593
+              },
+              {
+                "x": 15.0,
+                "y": 54.0,
+                "z": 12.0,
+                "yaw": 3.141593
+              },
+              {
+                "x": 15.0,
+                "y": 68.0,
+                "z": 12.0,
+                "yaw": 0.0
+              },
+              {
+                "x": 80.0,
+                "y": 68.0,
+                "z": 12.0,
+                "yaw": 0.0
+              },
+              {
+                "x": 80.0,
+                "y": 75.0,
+                "z": 12.0,
+                "yaw": 1.570796
+              }
+            ]
+          }
+        },
+        "A02": {
+          "robot_id": "A02",
+          "command_type": "FOLLOW_ROUTE",
+          "payload": {
+            "formation_follow": true
+          }
+        },
+        "A03": {
+          "robot_id": "A03",
+          "command_type": "FOLLOW_ROUTE",
+          "payload": {
+            "formation_follow": true
+          }
+        },
+        "A04": {
+          "robot_id": "A04",
+          "command_type": "FOLLOW_ROUTE",
+          "payload": {
+            "formation_follow": true
+          }
+        },
+        "A05": {
+          "robot_id": "A05",
+          "command_type": "FOLLOW_ROUTE",
+          "payload": {
+            "formation_follow": true
+          }
+        },
+        "A06": {
+          "robot_id": "A06",
+          "command_type": "FOLLOW_ROUTE",
+          "payload": {
+            "formation_follow": true
+          }
+        },
+        "A07": {
+          "robot_id": "A07",
+          "command_type": "FOLLOW_ROUTE",
+          "payload": {
+            "formation_follow": true
+          }
+        },
+        "A08": {
+          "robot_id": "A08",
+          "command_type": "FOLLOW_ROUTE",
+          "payload": {
+            "formation_follow": true
+          }
+        },
+        "A09": {
+          "robot_id": "A09",
+          "command_type": "FOLLOW_ROUTE",
+          "payload": {
+            "formation_follow": true
+          }
+        },
+        "A10": {
+          "robot_id": "A10",
+          "command_type": "FOLLOW_ROUTE",
+          "payload": {
+            "formation_follow": true
+          }
+        },
+        "A11": {
+          "robot_id": "A11",
+          "command_type": "FOLLOW_ROUTE",
+          "payload": {
+            "formation_follow": true
+          }
+        },
+        "A12": {
+          "robot_id": "A12",
+          "command_type": "FOLLOW_ROUTE",
+          "payload": {
+            "formation_follow": true
+          }
+        }
+      },
+      "completion_policy": "ALL"
+    },
+    {
+      "plan_id": "fault-exit",
+      "group_id": "GroupA",
+      "robot_assignments": {
+        "A07": {
+          "robot_id": "A07",
+          "command_type": "FAULT_EXIT",
+          "payload": {
+            "waypoints": [
+              {
+                "x": 85.0,
+                "y": 75.0,
+                "z": 8.0,
+                "yaw": 0.0
+              },
+              {
+                "x": 5.0,
+                "y": 20.0,
+                "z": 8.0,
+                "yaw": 0.0
+              }
+            ],
+            "manual_landing_required": true
+          }
+        },
+        "A08": {
+          "robot_id": "A08",
+          "command_type": "FAULT_EXIT",
+          "payload": {
+            "waypoints": [
+              {
+                "x": 90.0,
+                "y": 75.0,
+                "z": 8.0,
+                "yaw": 0.0
+              },
+              {
+                "x": 10.0,
+                "y": 20.0,
+                "z": 8.0,
+                "yaw": 0.0
+              }
+            ],
+            "manual_landing_required": true
+          }
+        },
+        "A09": {
+          "robot_id": "A09",
+          "command_type": "FAULT_EXIT",
+          "payload": {
+            "waypoints": [
+              {
+                "x": 75.0,
+                "y": 80.0,
+                "z": 8.0,
+                "yaw": 0.0
+              },
+              {
+                "x": 15.0,
+                "y": 20.0,
+                "z": 8.0,
+                "yaw": 0.0
+              }
+            ],
+            "manual_landing_required": true
+          }
+        },
+        "A10": {
+          "robot_id": "A10",
+          "command_type": "FAULT_EXIT",
+          "payload": {
+            "waypoints": [
+              {
+                "x": 80.0,
+                "y": 80.0,
+                "z": 8.0,
+                "yaw": 0.0
+              },
+              {
+                "x": 5.0,
+                "y": 25.0,
+                "z": 8.0,
+                "yaw": 0.0
+              }
+            ],
+            "manual_landing_required": true
+          }
+        },
+        "A11": {
+          "robot_id": "A11",
+          "command_type": "FAULT_EXIT",
+          "payload": {
+            "waypoints": [
+              {
+                "x": 85.0,
+                "y": 80.0,
+                "z": 8.0,
+                "yaw": 0.0
+              },
+              {
+                "x": 10.0,
+                "y": 25.0,
+                "z": 8.0,
+                "yaw": 0.0
+              }
+            ],
+            "manual_landing_required": true
+          }
+        },
+        "A12": {
+          "robot_id": "A12",
+          "command_type": "FAULT_EXIT",
+          "payload": {
+            "waypoints": [
+              {
+                "x": 90.0,
+                "y": 80.0,
+                "z": 8.0,
+                "yaw": 0.0
+              },
+              {
+                "x": 15.0,
+                "y": 25.0,
+                "z": 8.0,
+                "yaw": 0.0
+              }
+            ],
+            "manual_landing_required": true
+          }
+        }
+      },
+      "completion_policy": "ALL"
+    },
+    {
+      "plan_id": "recovery-a",
+      "group_id": "GroupA",
+      "robot_assignments": {
+        "A01": {
+          "robot_id": "A01",
+          "command_type": "MOVE_TO",
+          "payload": {
+            "target_pose": {
+              "x": 80.0,
+              "y": 75.0,
+              "z": 12.0,
+              "yaw": 0.0
+            },
+            "manual_takeoff_required": false
+          }
+        },
+        "A02": {
+          "robot_id": "A02",
+          "command_type": "MOVE_TO",
+          "payload": {
+            "target_pose": {
+              "x": 75.0,
+              "y": 70.0,
+              "z": 12.0,
+              "yaw": 0.0
+            },
+            "manual_takeoff_required": false
+          }
+        },
+        "A03": {
+          "robot_id": "A03",
+          "command_type": "MOVE_TO",
+          "payload": {
+            "target_pose": {
+              "x": 80.0,
+              "y": 70.0,
+              "z": 12.0,
+              "yaw": 0.0
+            },
+            "manual_takeoff_required": false
+          }
+        },
+        "A04": {
+          "robot_id": "A04",
+          "command_type": "MOVE_TO",
+          "payload": {
+            "target_pose": {
+              "x": 85.0,
+              "y": 70.0,
+              "z": 12.0,
+              "yaw": 0.0
+            },
+            "manual_takeoff_required": false
+          }
+        },
+        "A05": {
+          "robot_id": "A05",
+          "command_type": "MOVE_TO",
+          "payload": {
+            "target_pose": {
+              "x": 75.0,
+              "y": 75.0,
+              "z": 12.0,
+              "yaw": 0.0
+            },
+            "manual_takeoff_required": false
+          }
+        },
+        "A06": {
+          "robot_id": "A06",
+          "command_type": "MOVE_TO",
+          "payload": {
+            "target_pose": {
+              "x": 85.0,
+              "y": 75.0,
+              "z": 12.0,
+              "yaw": 0.0
+            },
+            "manual_takeoff_required": false
+          }
+        },
+        "A13": {
+          "robot_id": "A13",
+          "command_type": "MOVE_TO",
+          "payload": {
+            "target_pose": {
+              "x": 75.0,
+              "y": 80.0,
+              "z": 12.0,
+              "yaw": 0.0
+            },
+            "manual_takeoff_required": true
+          }
+        },
+        "A14": {
+          "robot_id": "A14",
+          "command_type": "MOVE_TO",
+          "payload": {
+            "target_pose": {
+              "x": 80.0,
+              "y": 80.0,
+              "z": 12.0,
+              "yaw": 0.0
+            },
+            "manual_takeoff_required": true
+          }
+        },
+        "A15": {
+          "robot_id": "A15",
+          "command_type": "MOVE_TO",
+          "payload": {
+            "target_pose": {
+              "x": 85.0,
+              "y": 80.0,
+              "z": 12.0,
+              "yaw": 0.0
+            },
+            "manual_takeoff_required": true
+          }
+        }
+      },
+      "completion_policy": "ALL"
+    },
+    {
+      "plan_id": "coverage-segment-2",
+      "group_id": "GroupA",
+      "robot_assignments": {
+        "A01": {
+          "robot_id": "A01",
+          "command_type": "FOLLOW_ROUTE",
+          "payload": {
+            "waypoints": [
+              {
+                "x": 80.0,
+                "y": 75.0,
+                "z": 12.0,
+                "yaw": 1.570796
+              },
+              {
+                "x": 80.0,
+                "y": 82.0,
+                "z": 12.0,
+                "yaw": 3.141593
+              },
+              {
+                "x": 15.0,
+                "y": 82.0,
+                "z": 12.0,
+                "yaw": 3.141593
+              },
+              {
+                "x": 15.0,
+                "y": 96.0,
+                "z": 12.0,
+                "yaw": 0.0
+              },
+              {
+                "x": 80.0,
+                "y": 96.0,
+                "z": 12.0,
+                "yaw": 0.0
+              },
+              {
+                "x": 80.0,
+                "y": 110.0,
+                "z": 12.0,
+                "yaw": 3.141593
+              },
+              {
+                "x": 15.0,
+                "y": 110.0,
+                "z": 12.0,
+                "yaw": 3.141593
+              },
+              {
+                "x": 15.0,
+                "y": 124.0,
+                "z": 12.0,
+                "yaw": 0.0
+              },
+              {
+                "x": 80.0,
+                "y": 124.0,
+                "z": 12.0,
+                "yaw": 0.0
+              },
+              {
+                "x": 80.0,
+                "y": 138.0,
+                "z": 12.0,
+                "yaw": 3.141593
+              },
+              {
+                "x": 15.0,
+                "y": 138.0,
+                "z": 12.0,
+                "yaw": 3.141593
+              }
+            ]
+          }
+        },
+        "A02": {
+          "robot_id": "A02",
+          "command_type": "FOLLOW_ROUTE",
+          "payload": {
+            "formation_follow": true
+          }
+        },
+        "A03": {
+          "robot_id": "A03",
+          "command_type": "FOLLOW_ROUTE",
+          "payload": {
+            "formation_follow": true
+          }
+        },
+        "A04": {
+          "robot_id": "A04",
+          "command_type": "FOLLOW_ROUTE",
+          "payload": {
+            "formation_follow": true
+          }
+        },
+        "A05": {
+          "robot_id": "A05",
+          "command_type": "FOLLOW_ROUTE",
+          "payload": {
+            "formation_follow": true
+          }
+        },
+        "A06": {
+          "robot_id": "A06",
+          "command_type": "FOLLOW_ROUTE",
+          "payload": {
+            "formation_follow": true
+          }
+        },
+        "A13": {
+          "robot_id": "A13",
+          "command_type": "FOLLOW_ROUTE",
+          "payload": {
+            "formation_follow": true
+          }
+        },
+        "A14": {
+          "robot_id": "A14",
+          "command_type": "FOLLOW_ROUTE",
+          "payload": {
+            "formation_follow": true
+          }
+        },
+        "A15": {
+          "robot_id": "A15",
+          "command_type": "FOLLOW_ROUTE",
+          "payload": {
+            "formation_follow": true
+          }
+        }
+      },
+      "completion_policy": "ALL"
+    },
+    {
+      "plan_id": "hold-a-end",
+      "group_id": "GroupA",
+      "robot_assignments": {
+        "A01": {
+          "robot_id": "A01",
+          "command_type": "HOVER",
+          "payload": {
+            "hold_pose": {
+              "x": 15.0,
+              "y": 138.0,
+              "z": 12.0,
+              "yaw": 0.0
+            }
+          }
+        },
+        "A02": {
+          "robot_id": "A02",
+          "command_type": "HOVER",
+          "payload": {
+            "hold_pose": {
+              "x": 10.0,
+              "y": 133.0,
+              "z": 12.0,
+              "yaw": 0.0
+            }
+          }
+        },
+        "A03": {
+          "robot_id": "A03",
+          "command_type": "HOVER",
+          "payload": {
+            "hold_pose": {
+              "x": 15.0,
+              "y": 133.0,
+              "z": 12.0,
+              "yaw": 0.0
+            }
+          }
+        },
+        "A04": {
+          "robot_id": "A04",
+          "command_type": "HOVER",
+          "payload": {
+            "hold_pose": {
+              "x": 20.0,
+              "y": 133.0,
+              "z": 12.0,
+              "yaw": 0.0
+            }
+          }
+        },
+        "A05": {
+          "robot_id": "A05",
+          "command_type": "HOVER",
+          "payload": {
+            "hold_pose": {
+              "x": 10.0,
+              "y": 138.0,
+              "z": 12.0,
+              "yaw": 0.0
+            }
+          }
+        },
+        "A06": {
+          "robot_id": "A06",
+          "command_type": "HOVER",
+          "payload": {
+            "hold_pose": {
+              "x": 20.0,
+              "y": 138.0,
+              "z": 12.0,
+              "yaw": 0.0
+            }
+          }
+        },
+        "A13": {
+          "robot_id": "A13",
+          "command_type": "HOVER",
+          "payload": {
+            "hold_pose": {
+              "x": 10.0,
+              "y": 143.0,
+              "z": 12.0,
+              "yaw": 0.0
+            }
+          }
+        },
+        "A14": {
+          "robot_id": "A14",
+          "command_type": "HOVER",
+          "payload": {
+            "hold_pose": {
+              "x": 15.0,
+              "y": 143.0,
+              "z": 12.0,
+              "yaw": 0.0
+            }
+          }
+        },
+        "A15": {
+          "robot_id": "A15",
+          "command_type": "HOVER",
+          "payload": {
+            "hold_pose": {
+              "x": 20.0,
+              "y": 143.0,
+              "z": 12.0,
+              "yaw": 0.0
+            }
+          }
+        }
+      },
+      "completion_policy": "ALL"
+    }
+  ]
+}
