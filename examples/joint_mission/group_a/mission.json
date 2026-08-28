@@ -10,7 +10,8 @@
   "world_file": "world.json",
   "bootstrap_file": "bootstrap.json",
   "plan_files": [
-    "plans/plans.json"
+    "plans/plans.json",
+    "plans/two_uav_smoke.json"
   ],
   "target_config_version": "target-v3",
   "file_hashes": {
@@ -18,6 +19,7 @@
     "robots.json": "25073f780b097119890eb608281f8751a41fc773f059ce16d76a70b9016383e4",
     "world.json": "485a8b8ec30747e69fc557c65deac826200ee88a48f0f7939699d7ef833f40b5",
     "bootstrap.json": "e7d0894e66577f88c32e651ade867e2dc4669d834d2fa41345e242c715b13ab1",
-    "plans/plans.json": "3a5810989dd47942c8d8a47c855776fbd5d34958da0b377ef8b121366aada8a9"
+    "plans/plans.json": "3a5810989dd47942c8d8a47c855776fbd5d34958da0b377ef8b121366aada8a9",
+    "plans/two_uav_smoke.json": "f35534848d1ae7c10fd725600d5edbca00a9570122497846a375a49057213895"
   }
 }

@@ -103,6 +103,9 @@ class TaskTestResult:
 
 TASK_DEFINITIONS: Dict[str, Dict[str, TaskDefinition]] = {
     "GroupA": {
+        "prepare-two-uav": TaskDefinition(
+            "GroupA", "PrepareGroupA", "prepare-a-two-uav", 60.0
+        ),
         "prepare": TaskDefinition("GroupA", "PrepareGroupA", "prepare-a", 30.0),
         "coverage-segment-1": TaskDefinition(
             "GroupA", "CoverageSegment1", "coverage-segment-1", 60.0

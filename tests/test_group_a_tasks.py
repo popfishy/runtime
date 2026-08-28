@@ -36,6 +36,7 @@ def execute(task, backend=None):
 @pytest.mark.parametrize(
     "task, expected",
     [
+        ("prepare-two-uav", [("MOVE_TO", 2, 0)]),
         ("prepare", [("MOVE_TO", 12, 0)]),
         ("coverage-segment-1", [("FOLLOW_ROUTE", 12, 1)]),
         ("fault-exit", [("FAULT_EXIT", 6, 6)]),
@@ -53,6 +54,25 @@ def test_group_a_task_command_batches(task, expected):
     ] == expected
     assert not result.failed_robot_ids
     assert not ({"TAKEOFF", "LAND"} & {goal.command_type for goal in result.goals})
+
+
+def test_two_uav_prepare_uses_only_a01_a02_and_conservative_targets():
+    package, _, result = execute("prepare-two-uav")
+    assert result.goals[0].robot_ids == ("A01", "A02")
+    plan = package.context.plans["prepare-a-two-uav"]
+    assert set(plan.robot_assignments) == {"A01", "A02"}
+    assert plan.robot_assignments["A01"].payload["target_pose"] == {
+        "x": 0.0,
+        "y": 2.0,
+        "z": 5.0,
+        "yaw": 0.0,
+    }
+    assert plan.robot_assignments["A02"].payload["target_pose"] == {
+        "x": 2.0,
+        "y": 2.0,
+        "z": 5.0,
+        "yaw": 0.0,
+    }
 
 
 def test_fault_exit_updates_six_members_and_routes_are_distinct():

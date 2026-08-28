@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "plans": [
+    {
+      "plan_id": "prepare-a-two-uav",
+      "group_id": "GroupA",
+      "robot_assignments": {
+        "A01": {
+          "robot_id": "A01",
+          "command_type": "MOVE_TO",
+          "payload": {
+            "target_pose": {
+              "x": 0.0,
+              "y": 2.0,
+              "z": 5.0,
+              "yaw": 0.0
+            }
+          }
+        },
+        "A02": {
+          "robot_id": "A02",
+          "command_type": "MOVE_TO",
+          "payload": {
+            "target_pose": {
+              "x": 2.0,
+              "y": 2.0,
+              "z": 5.0,
+              "yaw": 0.0
+            }
+          }
+        }
+      },
+      "completion_policy": "ALL"
+    }
+  ]
+}

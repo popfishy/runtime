@@ -213,6 +213,7 @@ class MockGroundStation:
 @pytest.mark.parametrize(
     "plan_id,command_type,robot_count",
     [
+        ("prepare-a-two-uav", "MOVE_TO", 2),
         ("prepare-a", "MOVE_TO", 12),
         ("coverage-segment-1", "FOLLOW_ROUTE", 12),
         ("fault-exit", "FAULT_EXIT", 6),
@@ -326,6 +327,7 @@ def test_group_b_b01_attack_test_uses_one_assignment():
 @pytest.mark.parametrize(
     "group_id,plan_id,task_name",
     [
+        ("GroupA", "prepare-a-two-uav", "prepare-two-uav"),
         ("GroupA", "prepare-a", "prepare"),
         ("GroupB", "strike-targets", "strike-targets"),
     ],

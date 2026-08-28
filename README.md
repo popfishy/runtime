@@ -43,6 +43,37 @@ python runtime/task_test.py --backend tcp --group B --task strike-targets \
 The output is one JSON object containing the terminal status, robot IDs,
 command types, individual Route count, target count, and final roster.
 
+### Group A two-UAV MOVE_TO smoke test
+
+The dedicated `prepare-two-uav` task uses the normal runtime flow and sends one
+Group A `MOVE_TO` batch containing only A01 and A02. First validate it without a
+ground station:
+
+```bash
+python3 src/runtime/task_test.py --backend memory --group A \
+  --task prepare-two-uav
+```
+
+After calibration, takeoff and OFFBOARD are confirmed, connect to `tcp_to_ros`:
+
+```bash
+python3 src/runtime/task_test.py --backend tcp --group A \
+  --task prepare-two-uav \
+  --tcp-host <GCS_A_IP> --tcp-port 39001 \
+  --max-ticks 2400
+```
+
+The reviewed test targets are stored in
+`examples/joint_mission/group_a/plans/two_uav_smoke.json`. They default to
+A01 `(0,2,5)` and A02 `(2,2,5)` in the Group A task frame. Review them for the
+actual field before flight. After editing, refresh the package hash without
+marking it reviewed:
+
+```bash
+python3 src/runtime/tools/update_mission_hashes.py \
+  src/runtime/examples/joint_mission/group_a
+```
+
 ## Development
 
 From the repository root, run:
