@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import sys
 from pathlib import Path
 from typing import List, Optional
@@ -24,6 +25,7 @@ from uav_bt_runtime.simulation import build_scripted_backend  # noqa: E402
 from uav_bt_runtime.task_testing import (  # noqa: E402
     available_tasks,
     run_single_task,
+    task_timeout_s,
 )
 from uav_bt_runtime.transport import (  # noqa: E402
     InMemoryCommandTransport,
@@ -47,7 +49,16 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--tcp-host")
     parser.add_argument("--tcp-port", type=int, default=39001)
     parser.add_argument("--tick-hz", type=float, default=20.0)
-    parser.add_argument("--max-ticks", type=int, default=1000)
+    parser.add_argument(
+        "--max-ticks",
+        type=int,
+        help="最大tick数；省略时按任务超时和tick频率自动计算",
+    )
+    parser.add_argument(
+        "--timeout-s",
+        type=float,
+        help="覆盖单任务命令及本地等待超时（秒）",
+    )
     return parser
 
 
@@ -74,6 +85,15 @@ def main(argv: Optional[List[str]] = None) -> int:
         )
         return 2
     package_path = args.package or EXAMPLE_ROOT / f"group_{group_suffix.lower()}"
+    timeout_s = args.timeout_s
+    if timeout_s is not None and timeout_s <= 0:
+        raise ValueError("timeout-s must be positive")
+    configured_timeout_s = timeout_s or task_timeout_s(group_id, args.task)
+    max_ticks = args.max_ticks
+    if max_ticks is None:
+        max_ticks = math.ceil(configured_timeout_s * args.tick_hz) + 1
+    if max_ticks <= 0:
+        raise ValueError("max-ticks must be positive")
 
     transport = None
     try:
@@ -95,7 +115,8 @@ def main(argv: Optional[List[str]] = None) -> int:
                 args.task,
                 transport,
                 clock,
-                max_ticks=args.max_ticks,
+                max_ticks=max_ticks,
+                timeout_s=timeout_s,
             )
             output = result.to_dict()
         else:
@@ -122,7 +143,8 @@ def main(argv: Optional[List[str]] = None) -> int:
                 args.task,
                 transport,
                 clock,
-                max_ticks=args.max_ticks,
+                max_ticks=max_ticks,
+                timeout_s=timeout_s,
                 wait_for_next_tick=lambda: time.sleep(1.0 / args.tick_hz),
             )
             output = result.to_dict()

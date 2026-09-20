@@ -185,6 +185,17 @@ def available_tasks(group_id: str) -> Tuple[str, ...]:
     return tuple(TASK_DEFINITIONS[group_id])
 
 
+def task_timeout_s(group_id: str, task: str) -> float:
+    """Return the configured command timeout for a reviewed task."""
+    try:
+        return TASK_DEFINITIONS[group_id][task].timeout_s
+    except KeyError as exc:
+        raise ValueError(
+            f"unsupported task {task!r} for {group_id}; "
+            f"available={list(available_tasks(group_id))}"
+        ) from exc
+
+
 def _mark_damaged(context: MissionContext) -> None:
     fault_ids = list(context.plans["fault-exit"].robot_assignments)
     active_ids = [item for item in context.roster.active_ids if item not in fault_ids]
@@ -244,7 +255,9 @@ def _action_node(definition: TaskDefinition, suffix: str = "0") -> ActionNode:
     )
 
 
-def build_task_node(package: MissionPackage, task: str):
+def build_task_node(
+    package: MissionPackage, task: str, timeout_s: Optional[float] = None
+):
     group_id = package.context.group_id
     try:
         definition = TASK_DEFINITIONS[group_id][task]
@@ -254,7 +267,19 @@ def build_task_node(package: MissionPackage, task: str):
             f"available={list(available_tasks(group_id))}"
         ) from exc
     apply_task_precondition(package.context, definition.precondition)
-    return _action_node(definition)
+    if timeout_s is None:
+        return _action_node(definition)
+    if timeout_s <= 0:
+        raise ValueError("timeout_s must be positive")
+    return _action_node(
+        TaskDefinition(
+            definition.group_id,
+            definition.action_id,
+            definition.plan_id,
+            timeout_s,
+            definition.precondition,
+        )
+    )
 
 
 def _summarize_batch(commands: Tuple[CommandEnvelope, ...]) -> TaskBatchSummary:
@@ -289,12 +314,13 @@ def run_single_task(
     tick_seconds: float = 0.1,
     wait_for_next_tick: Optional[Callable[[], None]] = None,
     logger: Optional[MissionLogger] = None,
+    timeout_s: Optional[float] = None,
 ) -> TaskTestResult:
     """Run one semantic task without executing preceding/following XML nodes."""
 
     if max_ticks <= 0 or tick_seconds <= 0:
         raise ValueError("max_ticks and tick_seconds must be positive")
-    node = build_task_node(package, task)
+    node = build_task_node(package, task, timeout_s=timeout_s)
     recording = RecordingCommandTransport(command_transport)
     bus = InMemoryCoordinationBus()
     services = RuntimeServices(
