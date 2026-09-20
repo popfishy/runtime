@@ -205,18 +205,8 @@ def test_loader_rejects_plan_assignment_to_unknown_uav(tmp_path):
         load_mission_context(robots_path, mission_path, plans_path)
 
 
-def test_loader_rejects_insufficient_reserves_and_missing_capability(tmp_path):
+def test_loader_rejects_plan_assignment_lacking_capability(tmp_path):
     robots_path, mission_path, plans_path = valid_files(tmp_path)
-    mission = json.loads(mission_path.read_text(encoding="utf-8"))
-    mission["planned_fault_count"] = 2
-    mission["planned_recovery_count"] = 2
-    write_json(mission_path, mission)
-    with pytest.raises(ConfigurationLoadError, match="planned_recovery_count"):
-        load_mission_context(robots_path, mission_path, plans_path)
-
-    mission["planned_fault_count"] = 1
-    mission["planned_recovery_count"] = 1
-    write_json(mission_path, mission)
     plans = json.loads(plans_path.read_text(encoding="utf-8"))
     plans["plans"][0]["robot_assignments"]["A01"]["command_type"] = "ATTACK"
     write_json(plans_path, plans)

@@ -283,11 +283,6 @@ class MissionContext(StrictModel):
                     f"inactive UAV {inactive_id!r} cannot be available or assigned"
                 )
 
-        if self.planned_recovery_count > self.planned_fault_count:
-            raise ValueError(
-                "planned_recovery_count cannot exceed planned_fault_count"
-            )
-
         for plan_id, plan in self.plans.items():
             if plan_id != plan.plan_id:
                 raise ValueError(f"plan key {plan_id!r} does not match plan.plan_id")

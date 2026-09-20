@@ -96,12 +96,6 @@ def test_normal_visual_simulation_follows_new_joint_flow() -> None:
             130.0 <= simulation.all_uavs[robot_id].pose.y <= 145.0
             for robot_id in context_a.roster.active_ids
         )
-        assert all(
-            simulation.field.margin_m <= x <= simulation.field.width_m - simulation.field.margin_m
-            and simulation.field.margin_m <= y <= simulation.field.height_m - simulation.field.margin_m
-            for uav in simulation.all_uavs.values()
-            for x, y in uav.trail
-        )
     finally:
         simulation.close()
 

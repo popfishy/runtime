@@ -1,23 +1,20 @@
-"""Reviewed mission-package loading, hashing, and scenario static validation."""
+"""Reviewed mission-package loading, hashing, and reference-integrity validation."""
 
 from __future__ import annotations
 
 import hashlib
-import math
 import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Mapping, Optional, Set, Union
+from typing import Dict, List, Mapping, Union
 
-from pydantic import Field, JsonValue, ValidationError, field_validator, model_validator
+from pydantic import Field, JsonValue, field_validator, model_validator
 
 from .actions import build_action_registry
 from .bt import (
-    ActionNode,
     BehaviorTreeParseError,
     BehaviorTreeParser,
     ParsedBehaviorTree,
-    SequenceNode,
 )
 from .config import (
     ConfigurationLoadError,
@@ -51,10 +48,6 @@ class FlightArea(StrictModel):
     def validate_bounds(self) -> "FlightArea":
         if self.max_x <= self.min_x or self.max_y <= self.min_y:
             raise ValueError("flight-area maximums must exceed minimums")
-        if 2.0 * self.safety_margin_m >= min(
-            self.max_x - self.min_x, self.max_y - self.min_y
-        ):
-            raise ValueError("flight-area safety margin leaves no usable area")
         return self
 
 
@@ -222,37 +215,8 @@ def load_mission_package(
                 raise MissionPackageError(
                     f"plan {plan.plan_id!r} references unknown target_id {target_id!r}"
                 )
-    validate_scenario_package(package)
+    _validate_reviewed_scene_coordinates(package)
     return package
-
-
-def _actions_by_id(package: MissionPackage) -> Dict[str, str]:
-    result: Dict[str, str] = {}
-    for reference in package.parsed_tree.action_references:
-        if reference.action_id in result:
-            raise MissionPackageError(
-                f"semantic Action {reference.action_id!r} appears more than once"
-            )
-        result[reference.action_id] = reference.plan_id or ""
-    return result
-
-
-def _plan_for_action(
-    package: MissionPackage, actions: Dict[str, str], action_id: str
-) -> TaskPlan:
-    plan_id = actions.get(action_id)
-    if not plan_id:
-        raise MissionPackageError(f"required Action {action_id!r} has no plan_id")
-    return package.context.plans[plan_id]
-
-
-def _require_exact_assignments(plan: TaskPlan, expected: Set[str], purpose: str) -> None:
-    actual = set(plan.robot_assignments)
-    if actual != expected:
-        raise MissionPackageError(
-            f"{purpose} assignments differ: missing={sorted(expected - actual)}, "
-            f"unexpected={sorted(actual - expected)}"
-        )
 
 
 def _validate_reviewed_scene_coordinates(package: MissionPackage) -> None:
@@ -292,210 +256,7 @@ def _validate_reviewed_scene_coordinates(package: MissionPackage) -> None:
                         )
 
 
-def validate_scenario_package(package: MissionPackage) -> None:
-    """Apply the fixed v1 Group A/Group B task-shape rules."""
-
-    actions = _actions_by_id(package)
-    context = package.context
-    all_ids = set(context.uav_specs)
-    _validate_reviewed_scene_coordinates(package)
-
-    if context.group_id == "GroupA":
-        expected_order = [
-            "PrepareGroupA",
-            "PublishGroupReady",
-            "WaitGroupBReady",
-            "CoverageSegment1",
-            "SimulateDamage",
-            "RecoverReconGroup",
-            "CoverageSegment2",
-            "PublishReconComplete",
-            "WaitStrikeComplete",
-            "HoldCoverageEnd",
-        ]
-        root = package.parsed_tree.tree.root
-        if not isinstance(root, SequenceNode) or not all(
-            isinstance(child, ActionNode) for child in root.children
-        ):
-            raise MissionPackageError("GroupA tree must be one Sequence of semantic Actions")
-        actual_order = [child.action_id for child in root.children]
-        if actual_order != expected_order:
-            raise MissionPackageError(
-                f"GroupA Action order differs: expected={expected_order}, actual={actual_order}"
-            )
-
-        initial_active = set(context.roster.active_ids)
-        initial_reserves = list(context.roster.reserve_ids)
-        prepare = _plan_for_action(package, actions, "PrepareGroupA")
-        coverage1 = _plan_for_action(package, actions, "CoverageSegment1")
-        fault = _plan_for_action(package, actions, "SimulateDamage")
-        recovery = _plan_for_action(package, actions, "RecoverReconGroup")
-        coverage2 = _plan_for_action(package, actions, "CoverageSegment2")
-        hold_plan = _plan_for_action(package, actions, "HoldCoverageEnd")
-
-        _require_exact_assignments(prepare, initial_active, "GroupA preparation")
-        _require_exact_assignments(coverage1, initial_active, "coverage segment 1")
-        fault_ids = set(fault.robot_assignments)
-        if len(fault_ids) != context.planned_fault_count:
-            raise MissionPackageError("fault plan size must equal planned_fault_count")
-        if not fault_ids <= initial_active:
-            raise MissionPackageError("fault candidates must be initially active")
-        if any(context.uav_specs[uav_id].is_leader for uav_id in fault_ids):
-            raise MissionPackageError("fault candidates cannot include a Leader")
-
-        activated = set(initial_reserves[: context.planned_recovery_count])
-        recovered_active = (initial_active - fault_ids) | activated
-        _require_exact_assignments(recovery, recovered_active, "fixed recovery")
-        _require_exact_assignments(coverage2, recovered_active, "coverage segment 2")
-        _require_exact_assignments(hold_plan, recovered_active, "GroupA end hold")
-        coverage_routes: Dict[str, List[JsonValue]] = {}
-        for coverage in (coverage1, coverage2):
-            route_owners = [
-                robot_id
-                for robot_id, assignment in coverage.robot_assignments.items()
-                if isinstance(assignment.payload.get("waypoints"), list)
-                and bool(assignment.payload.get("waypoints"))
-            ]
-            if len(route_owners) != 1 or not context.uav_specs[route_owners[0]].is_leader:
-                raise MissionPackageError(
-                    f"coverage plan {coverage.plan_id!r} must contain exactly one Leader route"
-                )
-            route = coverage.robot_assignments[route_owners[0]].payload.get("waypoints")
-            if not isinstance(route, list) or len(route) < 3:
-                raise MissionPackageError(
-                    f"coverage plan {coverage.plan_id!r} requires at least three waypoints"
-                )
-            coverage_routes[coverage.plan_id] = route
-            for robot_id, assignment in coverage.robot_assignments.items():
-                if robot_id == route_owners[0]:
-                    continue
-                if assignment.payload != {"formation_follow": True}:
-                    raise MissionPackageError(
-                        f"coverage follower {robot_id!r} must use formation_follow=true"
-                    )
-
-        route1 = coverage_routes[coverage1.plan_id]
-        route2 = coverage_routes[coverage2.plan_id]
-
-        def route_position(point: JsonValue, source: str) -> tuple:
-            if not isinstance(point, Mapping):
-                raise MissionPackageError(f"{source} must be a waypoint object")
-            values = []
-            for key in ("x", "y", "z"):
-                value = point.get(key)
-                if not isinstance(value, (int, float)) or isinstance(value, bool):
-                    raise MissionPackageError(f"{source}.{key} must be numeric")
-                values.append(float(value))
-            return tuple(values)
-
-        first_end = route_position(route1[-1], "coverage segment 1 endpoint")
-        second_start = route_position(route2[0], "coverage segment 2 start")
-        if any(
-            not math.isclose(left, right, abs_tol=1e-6)
-            for left, right in zip(first_end, second_start)
-        ):
-            raise MissionPackageError(
-                "coverage segment 2 must start at segment 1's fault/recovery point"
-            )
-        split_y = first_end[1]
-        first_scan_y = [
-            route_position(point, "coverage segment 1 waypoint")[1]
-            for point in route1[:-1]
-        ]
-        second_scan_y = [
-            route_position(point, "coverage segment 2 waypoint")[1]
-            for point in route2[1:]
-        ]
-        if any(y > split_y + 1e-6 for y in first_scan_y):
-            raise MissionPackageError("coverage segment 1 enters the upper region")
-        if any(y < split_y - 1e-6 for y in second_scan_y):
-            raise MissionPackageError("coverage segment 2 returns to the scanned lower region")
-        if first_scan_y[-1] <= first_scan_y[0] or second_scan_y[-1] <= second_scan_y[0]:
-            raise MissionPackageError(
-                "coverage routes must progress from the lower area to the upper area"
-            )
-
-        leader_ids = [
-            robot_id
-            for robot_id in initial_active
-            if context.uav_specs[robot_id].is_leader
-        ]
-        if len(leader_ids) != 1:
-            raise MissionPackageError("GroupA requires exactly one active Leader")
-        leader_id = leader_ids[0]
-        recovery_target = recovery.robot_assignments[leader_id].payload.get("target_pose")
-        hold_target = hold_plan.robot_assignments[leader_id].payload.get("hold_pose")
-        for actual, expected, source in (
-            (recovery_target, route2[0], "recovery Leader target"),
-            (hold_target, route2[-1], "final Leader hold"),
-        ):
-            actual_position = route_position(actual, source)
-            expected_position = route_position(expected, source + " route reference")
-            if any(
-                not math.isclose(left, right, abs_tol=1e-6)
-                for left, right in zip(actual_position, expected_position)
-            ):
-                raise MissionPackageError(f"{source} must match its coverage endpoint")
-        for robot_id, assignment in fault.robot_assignments.items():
-            waypoints = assignment.payload.get("waypoints")
-            if not isinstance(waypoints, list) or len(waypoints) < 2:
-                raise MissionPackageError(
-                    f"fault-exit UAV {robot_id!r} requires descend and exit waypoints"
-                )
-        return
-
-    if context.group_id == "GroupB":
-        root = package.parsed_tree.tree.root
-        expected_order = [
-            "PublishGroupReady",
-            "WaitGroupAReady",
-            "WaitReconComplete",
-            "StrikeTargets",
-            "ReturnStrikeUavs",
-            "PublishStrikeComplete",
-        ]
-        if not isinstance(root, SequenceNode) or not all(
-            isinstance(child, ActionNode) for child in root.children
-        ):
-            raise MissionPackageError("GroupB tree must be one Sequence of semantic Actions")
-        actual_order = [child.action_id for child in root.children]
-        if actual_order != expected_order:
-            raise MissionPackageError(
-                f"GroupB Action order differs: expected={expected_order}, actual={actual_order}"
-            )
-
-        strike = _plan_for_action(package, actions, "StrikeTargets")
-        return_plan = _plan_for_action(package, actions, "ReturnStrikeUavs")
-        strike_ids = set(strike.robot_assignments)
-        _require_exact_assignments(return_plan, strike_ids, "GroupB strike return")
-        if len(strike_ids) != 2:
-            raise MissionPackageError("GroupB strike plan must assign exactly two UAVs")
-        if not strike_ids <= set(context.roster.active_ids):
-            raise MissionPackageError("strike UAVs must be active and flight-eligible")
-        target_ids = {
-            assignment.payload.get("target_id")
-            for assignment in strike.robot_assignments.values()
-        }
-        if len(target_ids) != 2 or None in target_ids:
-            raise MissionPackageError("the two strike UAVs must use two distinct targets")
-        if target_ids != set(package.world.targets):
-            raise MissionPackageError(
-                "strike target IDs must exactly match the two reviewed world targets"
-            )
-        for robot_id, assignment in return_plan.robot_assignments.items():
-            waypoints = assignment.payload.get("waypoints")
-            if not isinstance(waypoints, list) or not waypoints:
-                raise MissionPackageError(
-                    f"return UAV {robot_id!r} requires a reviewed Route"
-                )
-        return
-
-    raise MissionPackageError(f"unsupported Group {context.group_id!r}")
-
-
-def validate_joint_packages(
-    first: MissionPackage, second: MissionPackage, minimum_uavs: int = 30
-) -> None:
+def validate_joint_packages(first: MissionPackage, second: MissionPackage) -> None:
     """Validate cross-station invariants before a joint mission starts."""
 
     packages = {first.context.group_id: first, second.context.group_id: second}
@@ -510,19 +271,8 @@ def validate_joint_packages(
         or group_b.manifest.peer_package_version != group_a.manifest.package_version
     ):
         raise MissionPackageError("peer package versions do not match")
-    if group_a.world.target_config_version != group_b.world.target_config_version:
-        raise MissionPackageError("target configuration versions do not match")
-    if sha256_file(group_a.directory / group_a.manifest.world_file) != sha256_file(
-        group_b.directory / group_b.manifest.world_file
-    ):
-        raise MissionPackageError("Group packages do not share identical world configuration")
 
     group_a_ids = set(group_a.context.uav_specs)
     group_b_ids = set(group_b.context.uav_specs)
     if group_a_ids & group_b_ids:
         raise MissionPackageError("the same UAV ID appears in both Groups")
-    if len(group_a_ids | group_b_ids) < minimum_uavs:
-        raise MissionPackageError(
-            f"joint mission requires at least {minimum_uavs} UAVs, "
-            f"found {len(group_a_ids | group_b_ids)}"
-        )

@@ -145,19 +145,6 @@ def build_mission_context(
         plan.plan_id: plan for plan in plan_catalog.plans if plan.group_id == bootstrap.group_id
     }
 
-    if bootstrap.planned_recovery_count > bootstrap.planned_fault_count:
-        raise ConfigurationLoadError(
-            "planned_recovery_count cannot exceed planned_fault_count; "
-            f"planned_recovery_count={bootstrap.planned_recovery_count}, "
-            f"planned_fault_count={bootstrap.planned_fault_count}"
-        )
-    if len(bootstrap.roster.reserve_ids) < bootstrap.planned_recovery_count:
-        raise ConfigurationLoadError(
-            "standby Reserve count must cover planned_recovery_count; "
-            f"reserves={len(bootstrap.roster.reserve_ids)}, "
-            f"planned_recovery_count={bootstrap.planned_recovery_count}"
-        )
-
     try:
         return MissionContext(
             mission_id=bootstrap.mission_id,

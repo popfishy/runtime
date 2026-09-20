@@ -30,8 +30,6 @@ class FieldConfig:
             raise ValueError("field width and height must be positive")
         if self.margin_m < 0:
             raise ValueError("field margin cannot be negative")
-        if self.margin_m * 2 >= min(self.width_m, self.height_m):
-            raise ValueError("field margin leaves no usable flight area")
 
 
 @dataclass
@@ -91,43 +89,17 @@ class CoordinateMapper:
         max_x = max(point[0] for point in coordinates)
         min_y = min(point[1] for point in coordinates)
         max_y = max(point[1] for point in coordinates)
-        span_x = max(max_x - min_x, 1.0)
-        span_y = max(max_y - min_y, 1.0)
-        usable_width = field.width_m - 2 * field.margin_m
-        usable_height = field.height_m - 2 * field.margin_m
-        inside_reviewed_bounds = (
-            min_x >= field.margin_m
-            and max_x <= field.width_m - field.margin_m
-            and min_y >= field.margin_m
-            and max_y <= field.height_m - field.margin_m
-        )
-        if inside_reviewed_bounds:
-            return cls(
-                field=field,
-                source_min_x=min_x,
-                source_max_x=max_x,
-                source_min_y=min_y,
-                source_max_y=max_y,
-                scale=1.0,
-                offset_x=0.0,
-                offset_y=0.0,
-            )
-        # Never enlarge reviewed distances.  Oversized prototype coordinates are
-        # uniformly reduced to fit a configured experiment area.
-        scale = min(1.0, usable_width / span_x, usable_height / span_y)
-        mapped_width = (max_x - min_x) * scale
-        mapped_height = (max_y - min_y) * scale
-        offset_x = (field.width_m - mapped_width) / 2.0 - min_x * scale
-        offset_y = (field.height_m - mapped_height) / 2.0 - min_y * scale
+        # Reviewed coordinates are forwarded 1:1.  Field bounds and any scaling
+        # are owned by the ground station, so the visualiser must not rescale.
         return cls(
             field=field,
             source_min_x=min_x,
             source_max_x=max_x,
             source_min_y=min_y,
             source_max_y=max_y,
-            scale=scale,
-            offset_x=offset_x,
-            offset_y=offset_y,
+            scale=1.0,
+            offset_x=0.0,
+            offset_y=0.0,
         )
 
     def map_xyz(self, x: float, y: float, z: float) -> Point3D:

@@ -120,19 +120,6 @@ def test_package_rejects_unreviewed_tampered_and_unknown_xml(tmp_path):
         load_mission_package(copied)
 
 
-def test_package_rejects_incomplete_scenario_plan(tmp_path):
-    copied = tmp_path / "group_a"
-    shutil.copytree(EXAMPLES / "group_a", copied)
-    plans_path = copied / "plans" / "plans.json"
-    plans = json.loads(plans_path.read_text(encoding="utf-8"))
-    prepare = next(plan for plan in plans["plans"] if plan["plan_id"] == "prepare-a")
-    prepare["robot_assignments"].pop("A12")
-    plans_path.write_text(json.dumps(plans, indent=2) + "\n", encoding="utf-8")
-    update_hash(copied, "plans/plans.json")
-    with pytest.raises(MissionPackageError, match="preparation assignments differ"):
-        load_mission_package(copied, require_reviewed=False)
-
-
 def test_package_rejects_unknown_target_reference(tmp_path):
     copied = tmp_path / "group_b"
     shutil.copytree(EXAMPLES / "group_b", copied)
@@ -179,54 +166,6 @@ def test_package_allows_target_outside_configured_boundary(tmp_path):
     package = load_mission_package(copied, require_reviewed=False)
 
     assert package.world.targets["target-2"]["x"] == 2.0
-
-
-def test_package_rejects_disconnected_coverage_segments(tmp_path):
-    copied = tmp_path / "group_a"
-    shutil.copytree(EXAMPLES / "group_a", copied)
-    plans_path = copied / "plans" / "plans.json"
-    plans = json.loads(plans_path.read_text(encoding="utf-8"))
-    segment2 = next(
-        plan for plan in plans["plans"] if plan["plan_id"] == "coverage-segment-2"
-    )
-    segment2["robot_assignments"]["A01"]["payload"]["waypoints"][0]["x"] += 1.0
-    plans_path.write_text(json.dumps(plans, indent=2) + "\n", encoding="utf-8")
-    update_hash(copied, "plans/plans.json")
-    with pytest.raises(MissionPackageError, match="must start at segment 1"):
-        load_mission_package(copied, require_reviewed=False)
-
-
-def test_package_rejects_second_coverage_returning_to_scanned_area(tmp_path):
-    copied = tmp_path / "group_a"
-    shutil.copytree(EXAMPLES / "group_a", copied)
-    plans_path = copied / "plans" / "plans.json"
-    plans = json.loads(plans_path.read_text(encoding="utf-8"))
-    segment2 = next(
-        plan for plan in plans["plans"] if plan["plan_id"] == "coverage-segment-2"
-    )
-    segment2["robot_assignments"]["A01"]["payload"]["waypoints"][1]["y"] = 70.0
-    plans_path.write_text(json.dumps(plans, indent=2) + "\n", encoding="utf-8")
-    update_hash(copied, "plans/plans.json")
-    with pytest.raises(MissionPackageError, match="returns to the scanned lower region"):
-        load_mission_package(copied, require_reviewed=False)
-
-
-def test_group_b_requires_fixed_dual_strike_order(tmp_path):
-    copied = tmp_path / "group_b"
-    shutil.copytree(EXAMPLES / "group_b", copied)
-    tree_path = copied / "tree.xml"
-    tree_text = tree_path.read_text(encoding="utf-8")
-    strike_line = '<Action ID="StrikeTargets" plan_id="strike-targets" timeout_s="300"/>'
-    return_line = '<Action ID="ReturnStrikeUavs" plan_id="return-strike-uavs" timeout_s="300"/>'
-    tree_path.write_text(
-        tree_text.replace(strike_line, "__STRIKE__", 1)
-        .replace(return_line, strike_line, 1)
-        .replace("__STRIKE__", return_line, 1),
-        encoding="utf-8",
-    )
-    update_hash(copied, "tree.xml")
-    with pytest.raises(MissionPackageError, match="Action order differs"):
-        load_mission_package(copied, require_reviewed=False)
 
 
 @pytest.mark.parametrize(
